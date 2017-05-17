@@ -64,7 +64,6 @@ public class DbAccess
     }
     //读取table
     public SqliteDataReader ReadFullTable(string tableName)
-
     {
         string query = "SELECT * FROM " + tableName;
         return ExecuteQuery(query);
@@ -146,23 +145,13 @@ public class DbAccess
         {
             return true;
         }
-        return true;
+        return false;
     }
 
     // 创建表
     public SqliteDataReader CreateTable(string name, string[] col, string[] colType)
     {
-        if (name == string.Empty)
-        {
-            Debug.LogFormat("sql table name = Empty {0}", name);
-            return null;
-        }
-        if (null == sqliteCommand)
-        {
-            sqliteCommand = dbConnection.CreateCommand();
-        }
-        sqliteCommand.CommandText = string.Format("SELECT COUNT(*) FROM sqlite_master where type='table' and name='{0}';", name);
-        if (1 == Convert.ToInt32(sqliteCommand.ExecuteScalar()))
+        if (IsTable(name))
         {
             return ReadFullTable(name);
         }
