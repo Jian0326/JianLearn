@@ -416,7 +416,7 @@ public class StringUtil
 
     public static bool IsEmptyString(string str)
     {
-        return str == null || str == "";
+        return str == string.Empty;
     }
 
 

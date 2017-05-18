@@ -19,7 +19,7 @@ public class SignUp : MonoBehaviour
     private const string DB_TABLE_NAME = "signUp";
     void Start()
     {
-        db = new DbAccess(GameConfig.signUpSQLName);
+        db = new DbAccess(GameConfig.SignUpSQLName);
         db.CreateTable(DB_TABLE_NAME, new string[] { "name", "email", "password" }, new string[] { "text", "text", "text" });
         toolTip = gameObject.GetComponent<UIToolTip>();
     }

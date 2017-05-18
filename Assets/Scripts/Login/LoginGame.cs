@@ -45,7 +45,7 @@ public class LoginGame : MonoBehaviour
             ShowTip("密码名为空");
             return false;
         }
-        DbAccess db = new DbAccess(GameConfig.signUpSQLName);
+        DbAccess db = new DbAccess(GameConfig.SignUpSQLName);
         SqliteDataReader sqReader = db.SelectWhere(DB_TABLE_NAME, new string[] { "name" }, new string[] { "name" }, new string[] { "=" }, new string[] { nameText.text });
         bool isSign = false;
         while (sqReader.Read())
