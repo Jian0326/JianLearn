@@ -1,65 +1,70 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-public class LoadScene : MonoBehaviour
+namespace Assets.Scripts.Load
 {
-
-    // Use this for initialization
-    private AsyncOperation asyncOp;
-    [SerializeField]
-    private Slider slider;
-    [SerializeField]
-    private Text progressText;
-    [SerializeField]
-    private string sceneName;
-    void Start()
+    public class LoadScene : MonoBehaviour
     {
-        if (GameConfig.SceneName != string.Empty)
+
+        // Use this for initialization
+        private AsyncOperation asyncOp;
+        [SerializeField]
+        private Slider slider;
+        [SerializeField]
+        private Text progressText;
+        [SerializeField]
+        private Text poetryText;
+        [SerializeField]
+        private string sceneName;
+        void Start()
         {
-            sceneName = GameConfig.SceneName;
+            if (GameConfig.SceneName != string.Empty)
+            {
+                sceneName = GameConfig.SceneName;
+            }
+            Debug.Log(sceneName);
+            StartCoroutine(StartLoad());
         }
-        Debug.Log(sceneName);
-        StartCoroutine(StartLoad());
-    }
 
-    private IEnumerator StartLoad()
-    {
-        yield return new WaitForEndOfFrame();
-        asyncOp = SceneManager.LoadSceneAsync(sceneName);
-        asyncOp.allowSceneActivation = false;
-        int totalPar = 0;
-        int currentPar = 0;
-        while (asyncOp.progress < 0.9f)
+        private IEnumerator StartLoad()
         {
-            totalPar = (int)(asyncOp.progress * 100);
+            yield return new WaitForEndOfFrame();
+            asyncOp = SceneManager.LoadSceneAsync(sceneName);
+            asyncOp.allowSceneActivation = false;
+            int totalPar = 0;
+            int currentPar = 0;
+            while (asyncOp.progress < 0.9f)
+            {
+                totalPar = (int)(asyncOp.progress * 100);
+                while (currentPar < totalPar)
+                {
+                    currentPar++;
+                    SetProgress(currentPar);
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+            totalPar = 100;
             while (currentPar < totalPar)
             {
                 currentPar++;
                 SetProgress(currentPar);
                 yield return new WaitForEndOfFrame();
             }
+            asyncOp.allowSceneActivation = true;
+            yield return asyncOp;
         }
-        totalPar = 100;
-        while (currentPar < totalPar)
+        // Update is called once per frame
+        void Update()
         {
-            currentPar++;
-            SetProgress(currentPar);
-            yield return new WaitForEndOfFrame();
+
         }
-        asyncOp.allowSceneActivation = true;
-        yield return asyncOp;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void SetProgress(int pro)
-    {
-        progressText.text = string.Format("{0}%", pro);
-        slider.value = pro;
+        private void SetProgress(int pro)
+        {
+            progressText.text = string.Format("{0}%", pro);
+            slider.value = pro;
+        }
     }
 }

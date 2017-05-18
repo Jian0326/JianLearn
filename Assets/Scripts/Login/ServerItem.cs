@@ -1,44 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-
-public class ServerItem : MonoBehaviour
+using Assets.Scripts.Utils;
+namespace Assets.Scripts.Login
 {
-
-    // Use this for initialization
-    [SerializeField]
-    private GameObject prefabs;
-    void Start()
+    public class ServerItem : MonoBehaviour
     {
-        WWW www = new WWW(PlatformConfig.WwwURL + "/csv/serverName.csv");
-        string text;
-        while (!www.isDone)
+
+        // Use this for initialization
+        [SerializeField]
+        private GameObject prefabs;
+        void Start()
         {
+            LoadCsv csv = new LoadCsv();
+            string[] res = csv.StartLoadCsv("serverName.csv");
+            int len = res.Length;
+            for (uint i = 1; i < len; i++)
+            {
+                CreateItem(res[i], i);
+            }
         }
-        text = www.text;
-        string[] res = text.Split(new string[] { "\r\n" }, System.StringSplitOptions.RemoveEmptyEntries);
-        Debug.Log(res);
-        int len = res.Length;
-        for (uint i = 1; i < len; i++)
+
+        private void CreateItem(string data, uint index)
         {
-            CreateItem(res[i],i);
-        }       
-    }
+            string[] datas = data.Split(new char[] { ',' });
+            GameObject obj = Instantiate<GameObject>(prefabs);
+            obj.SetActive(true);
+            obj.transform.SetParent(transform, false);
+            Text name = obj.GetComponentInChildren<Text>();
+            name.text = datas[0];
 
-    private void CreateItem(string data,uint index)
-    {
-        string[] datas = data.Split(new char[] { ',' });
-        GameObject obj = Instantiate<GameObject>(prefabs);
-        obj.SetActive(true);
-        obj.transform.SetParent(transform, false);
-        Text name = obj.GetComponentInChildren<Text>();
-        name.text = datas[0];
-        
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
+        }
     }
 }

@@ -1,94 +1,99 @@
 ﻿using Mono.Data.Sqlite;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Utils;
 
-public class LoginGame : MonoBehaviour
+namespace Assets.Scripts.Login
 {
-
-    private const string DB_TABLE_NAME = "signUp";
-    // Use this for initialization
-    [SerializeField]
-    private InputField nameText;
-    [SerializeField]
-    private InputField passwordText;
-
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
+    public class LoginGame : MonoBehaviour
     {
 
-    }
+        private const string DB_TABLE_NAME = "signUp";
+        // Use this for initialization
+        [SerializeField]
+        private InputField nameText;
+        [SerializeField]
+        private InputField passwordText;
 
-    public void StartGame()
-    {
-        bool isOk = CheckNameAndPassword();
-        if (isOk)
+        void Start()
+        {
+        }
+
+        // Update is called once per frame
+        void Update()
         {
 
         }
-    }
 
-    private bool CheckNameAndPassword()
-    {
-        if (nameText.text == string.Empty)
+        public void StartGame()
         {
-            ShowTip("用户名为空");
-            return false;
+            bool isOk = CheckNameAndPassword();
+            if (isOk)
+            {
+                GameConfig.SceneName = "main";
+                SceneManager.LoadScene("LoginScene");
+            }
         }
-        if (passwordText.text == string.Empty)
+
+        private bool CheckNameAndPassword()
         {
-            ShowTip("密码名为空");
-            return false;
-        }
-        DbAccess db = new DbAccess(GameConfig.SignUpSQLName);
-        SqliteDataReader sqReader = db.SelectWhere(DB_TABLE_NAME, new string[] { "name" }, new string[] { "name" }, new string[] { "=" }, new string[] { nameText.text });
-        bool isSign = false;
-        while (sqReader.Read())
-        {
-            isSign = true;
-            break;
-        }
-        if (!isSign)
-        {
-            ShowTip("用户名不存在");
-            return isSign;
-        }
-        sqReader = db.SelectWhere(DB_TABLE_NAME, new string[] {  "name","password" }, new string[] { "password" }, new string[] { "=" }, new string[] { passwordText.text });
-        isSign = false;
-        while (sqReader.Read())
-        {
-            string password = sqReader.GetString(sqReader.GetOrdinal("password"));
-            string name = sqReader.GetString(sqReader.GetOrdinal("name"));
-            Debug.Log(password);
-            isSign = name == nameText.text;
+            if (nameText.text == string.Empty)
+            {
+                ShowTip("用户名为空");
+                return false;
+            }
+            if (passwordText.text == string.Empty)
+            {
+                ShowTip("密码名为空");
+                return false;
+            }
+            DbAccess db = new DbAccess(GameConfig.SignUpSQLName);
+            SqliteDataReader sqReader = db.SelectWhere(DB_TABLE_NAME, new string[] { "name" }, new string[] { "name" }, new string[] { "=" }, new string[] { nameText.text });
+            bool isSign = false;
+            while (sqReader.Read())
+            {
+                isSign = true;
+                break;
+            }
             if (!isSign)
             {
-                break;
-            } 
-        }
-        if (!isSign)
-        {
-            ShowTip("密码错误。请重新输入");
+                ShowTip("用户名不存在");
+                return isSign;
+            }
+            sqReader = db.SelectWhere(DB_TABLE_NAME, new string[] { "name", "password" }, new string[] { "password" }, new string[] { "=" }, new string[] { passwordText.text });
+            isSign = false;
+            while (sqReader.Read())
+            {
+                string password = sqReader.GetString(sqReader.GetOrdinal("password"));
+                string name = sqReader.GetString(sqReader.GetOrdinal("name"));
+                Debug.Log(password);
+                isSign = name == nameText.text;
+                if (!isSign)
+                {
+                    break;
+                }
+            }
+            if (!isSign)
+            {
+                ShowTip("密码错误。请重新输入");
+                return isSign;
+            }
+            db.CloseDB();
             return isSign;
         }
-        db.CloseDB();
-        return isSign;
-    }
 
-    private void ShowTip(string text)
-    {
-        var tip = gameObject.GetComponent<UIToolTip>();
-        tip.ShowTip(text, Color.red, 24);
-    }
+        private void ShowTip(string text)
+        {
+            var tip = gameObject.GetComponent<UIToolTip>();
+            tip.ShowTip(text, Color.red, 24);
+        }
 
-    public void InputText(List<string> obj)
-    {
-        nameText.text = obj[0];
-        passwordText.text = obj[1];
+        public void InputText(List<string> obj)
+        {
+            nameText.text = obj[0];
+            passwordText.text = obj[1];
+        }
     }
 }

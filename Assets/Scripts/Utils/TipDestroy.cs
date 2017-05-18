@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class TipDestroy : MonoBehaviour {
-
-    // Use this for initialization
-
-    public void Start()
+namespace Assets.Scripts.Utils
+{
+    public class TipDestroy : MonoBehaviour
     {
-    }
 
-    public void RunDestroy(float value)
-    {
-        Destroy(gameObject);
+        // Use this for initialization
+
+        public void Start()
+        {
+        }
+
+        public void RunDestroy(float value)
+        {
+            Destroy(gameObject);
+        }
     }
 }

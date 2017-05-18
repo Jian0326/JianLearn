@@ -3,36 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
-public class GameConfig
+namespace Assets.Scripts.Utils
 {
-    private static Dictionary<string, string> SCENE_NAMES = new Dictionary<string, string> {
+    public class GameConfig
+    {
+        private static Dictionary<string, string> SCENE_NAMES = new Dictionary<string, string> {
         { "load","LoadScene"},
         { "login","LoginScene"},
         { "main","MainScene"},
     };
-    private static string sceneName = "";
-    public static string SignUpSQLName
-    {
-        get
+        private static string sceneName = "";
+        public static string SignUpSQLName
         {
-            return PlatformConfig.SqlURL + "/signUp.db";
-        }
-    }
-    //需要先设置 SCENE_NAMES 的key
-    public static string SceneName
-    {
-        set
-        {
-            sceneName = value;
-        }
-        get
-        {
-            if (!SCENE_NAMES.ContainsKey(sceneName))
+            get
             {
-                return string.Empty;
+                return PlatformConfig.SqlURL + "/signUp.db";
             }
-            return SCENE_NAMES[sceneName];
+        }
+        //需要先设置 SCENE_NAMES 的key
+        public static string SceneName
+        {
+            set
+            {
+                sceneName = value;
+            }
+            get
+            {
+                if (!SCENE_NAMES.ContainsKey(sceneName))
+                {
+                    return string.Empty;
+                }
+                return SCENE_NAMES[sceneName];
+            }
         }
     }
 }

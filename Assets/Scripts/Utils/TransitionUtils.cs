@@ -2,25 +2,22 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
-public static class TransitionUtils
+namespace Assets.Scripts.Utils
 {
-    public static IEnumerator FadeTo(CanvasGroup group, float alpha, float duration)
+    public static class TransitionUtils
     {
-        var time = 0.0f;
-        var originalAlpha = group.alpha;
-        while (time < duration)
+        public static IEnumerator FadeTo(CanvasGroup group, float alpha, float duration)
         {
-            time += Time.deltaTime;
-            group.alpha = Mathf.Lerp(originalAlpha, alpha, time / duration);
-            yield return new WaitForEndOfFrame();
-        }
-        group.alpha = alpha;
+            var time = 0.0f;
+            var originalAlpha = group.alpha;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                group.alpha = Mathf.Lerp(originalAlpha, alpha, time / duration);
+                yield return new WaitForEndOfFrame();
+            }
+            group.alpha = alpha;
+        }        
     }
-
-    public static void ShowTips(string text,Color color)
-    {
-       
-    }
-  }
+}
 
