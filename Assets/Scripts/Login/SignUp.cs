@@ -8,6 +8,7 @@ namespace Assets.Scripts.Login
 {
     public class SignUp : MonoBehaviour
     {
+<<<<<<< HEAD
         // Use this for initialization
         private DbAccess db;
         [SerializeField]
@@ -16,6 +17,12 @@ namespace Assets.Scripts.Login
         private InputField emailText;
         [SerializeField]
         private InputField passworldText;
+=======
+        db = new DbAccess(GameConfig.SignUpSQLName);
+        db.CreateTable(DB_TABLE_NAME, new string[] { "name", "email", "password" }, new string[] { "text", "text", "text" });
+        toolTip = gameObject.GetComponent<UIToolTip>();
+    }
+>>>>>>> bb313cad1548109f2c8f9ae50416a8901c7b46c8
 
         private UIToolTip toolTip;
         private const string DB_TABLE_NAME = "signUp";

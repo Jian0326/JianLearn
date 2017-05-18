@@ -413,10 +413,17 @@ namespace Assets.Scripts.Utils
                 return Regex.Replace(sChars, @"/[^\x00-\xff]/g", "xx").Length;
         }
 
+<<<<<<< HEAD
         public static bool IsEmptyString(string str)
         {
             return str == string.Empty;
         }
+=======
+    public static bool IsEmptyString(string str)
+    {
+        return str == string.Empty;
+    }
+>>>>>>> bb313cad1548109f2c8f9ae50416a8901c7b46c8
 
 
 
