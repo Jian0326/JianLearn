@@ -24,26 +24,10 @@ namespace Assets.Scripts.Login
         // Update is called once per frame
         void Update()
         {
-<<<<<<< HEAD
 
-=======
-            ShowTip("用户名为空");
-            return false;
+            
         }
-        if (passwordText.text == string.Empty)
-        {
-            ShowTip("密码名为空");
-            return false;
-        }
-        DbAccess db = new DbAccess(GameConfig.SignUpSQLName);
-        SqliteDataReader sqReader = db.SelectWhere(DB_TABLE_NAME, new string[] { "name" }, new string[] { "name" }, new string[] { "=" }, new string[] { nameText.text });
-        bool isSign = false;
-        while (sqReader.Read())
-        {
-            isSign = true;
-            break;
->>>>>>> bb313cad1548109f2c8f9ae50416a8901c7b46c8
-        }
+        
 
         public void StartGame()
         {
